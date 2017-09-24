@@ -57,8 +57,14 @@ public final class AdaptiveMergesort {
     
     private static <T extends Comparable<? super T>> 
         Run merge(T[] aux, Run run1, Run run2) {
+        Interval head = null;
+        Interval tail = null;
+            
         
-        return null;
+        
+        run1.first = head;
+        run1.last = tail;
+        return run1;
     }
     
     private static void checkIndices(int arrayLength, 
@@ -270,5 +276,71 @@ public final class AdaptiveMergesort {
                 array[j] = tmp;
             }
         }
+    }
+    
+    private static <T extends Comparable<? super T>> 
+        int lowerBound(T[] array, int fromIndex, int toIndex, T value) {
+        int count = toIndex - fromIndex;
+        int it;
+        
+        while (count > 0) {
+            it = fromIndex;
+            int step = count >>> 1;
+            it += step;
+            
+            if (array[it].compareTo(value) < 0) {
+                fromIndex = ++it;
+                count -= step + 1;
+            } else {
+                count = step;
+            }
+        }
+        
+        return fromIndex;
+    }
+    
+    private static <T extends Comparable<? super T>>
+        int upperBound(T[] array, int fromIndex, int toIndex, T value) {
+        int count = toIndex - fromIndex;
+        int it;
+        
+        while (count > 0) {
+            it = fromIndex; 
+            int step = count >>> 1;
+            it += step;
+            
+            if (array[it].compareTo(value) <= 0) {
+                fromIndex = ++it;
+                count -= step + 1;
+            } else {
+                count = step;
+            }
+        }
+        
+        return fromIndex;
+    }
+    
+    private static <T extends Comparable<? super T>> 
+        int findLowerBound(T[] array, int fromIndex, int toIndex, T value) {
+        int bound = 1;
+        int rangeLength = toIndex - fromIndex;
+        
+        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+            bound <<= 1;
+        }
+        
+        return lowerBound(array, bound >>> 1, Math.min(toIndex, bound), value);
+    }
+        
+    private static <T extends Comparable<? super T>> 
+        int findUpperBound(T[] array, int fromIndex, int toIndex, T value) {
+        int bound = 1;
+        int rangeLength = toIndex - fromIndex;
+        
+        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+            bound <<= 1;
+        }
+        
+        return upperBound(array, bound >>> 1, Math.min(toIndex, bound), value);
     }
 }

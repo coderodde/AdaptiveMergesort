@@ -39,8 +39,8 @@ public final class Demo {
             int step = count >>> 1;
             it += step;
             
-            if (!(value < array[it])) {
-                fromIndex += ++it;
+            if (value >= array[it]) {
+                fromIndex = ++it;
                 count -= step + 1;
             } else {
                 count = step;
@@ -51,8 +51,8 @@ public final class Demo {
     }
     
     public static void main(String[] args) {
-        Integer[] arr = {4, 5, 6, 3, 2, 1, 8, 3, 8 };
-        AdaptiveMergesort.sort(arr, 1, arr.length);
-        System.out.println(Arrays.toString(arr));
+        Integer[] arr = { 1, 2, 4, 7, 10, 10, 11, 14, 14, 19, 20 };
+        System.out.println("Lower bound: " + lowerBound(arr, 1, arr.length - 1, 10));
+        System.out.println("Upper bound: " + upperBound(arr, 1, arr.length - 1, 10));
     }
 }
