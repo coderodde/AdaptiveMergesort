@@ -31,7 +31,10 @@ public final class AdaptiveMergesort {
         while (queue.size() > 0) {
             switch (runsLeft) {
                 case 1:
+                    // Bounce the lonely leftover run back to the tail of the 
+                    // queue:
                     queue.enqueue(queue.dequeue());
+                    // Fall through!
                     
                 case 0:
                     runsLeft = queue.size();
@@ -42,11 +45,19 @@ public final class AdaptiveMergesort {
             Run run2 = queue.dequeue();
             queue.enqueue(merge(aux, run1, run2));
         }
+        
+        for (Interval interval = queue.dequeue().first; 
+                interval != null; 
+                interval = interval.next) {
+            for (int i = interval.from; i <= interval.to; ++i) {
+                array[fromIndex + i] = aux[i];
+            }
+        }
     }
     
     private static <T extends Comparable<? super T>> 
         Run merge(T[] aux, Run run1, Run run2) {
-            
+        
         return null;
     }
     
