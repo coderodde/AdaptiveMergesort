@@ -522,6 +522,11 @@ public final class AdaptiveMergesort {
         Run run1 = new Run(0, 2);
         Run run2 = new Run(3, 5);
         Run merged = merge(array, run1, run2);
-        System.out.println("yeah");
+        System.out.println(merged);
+        array = new Integer[]{ 1, 2, 3, 1, 2, 3 };
+        run1 = new Run(0, 2);
+        run2 = new Run(3, 5);
+        merged = merge(array, run1, run2);
+        System.out.println(merged);
     }
 }
