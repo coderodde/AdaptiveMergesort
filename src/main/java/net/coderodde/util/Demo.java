@@ -7,10 +7,10 @@ public final class Demo {
 
     private static final int FROM_INDEX = 7;
     private static final int SKIP_RIGHT = 9;
-    private static final int ARRAY_LENGTH = 1000;
+    private static final int ARRAY_LENGTH = 100_000;
     private static final int BLOCKS = 30;
-    private static final int MIN_ELEMENT = -1000;
-    private static final int MAX_ELEMENT = 1000;
+    private static final int MIN_ELEMENT = -10_000;
+    private static final int MAX_ELEMENT = 10_000;
     
     public static void main(String[] args) {
         long seed = System.currentTimeMillis();
@@ -34,10 +34,12 @@ public final class Demo {
     
     private static void benchmark(Random random) {
         Integer[] array = getBlockedArray(ARRAY_LENGTH, BLOCKS, random);
-        warmup(array);
+        System.out.println("--- Blocked array ---");
+        benchmark(array);
         
         array = getRandomArray(ARRAY_LENGTH, random);
-        warmup(array);
+        System.out.println("--- Random array ----");
+        benchmark(array);
     }
     
     private static void warmup(Integer[] array1) {
@@ -70,6 +72,9 @@ public final class Demo {
             System.out.println("AdaptiveMergesort.sort in " + 
                                (endTime - startTime) +
                                " milliseconds.");
+            
+            System.out.println("Algorithms agree: " +
+                               Arrays.equals(array1, array2));
         }
     }
     
