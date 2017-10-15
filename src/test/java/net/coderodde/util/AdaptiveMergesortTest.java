@@ -2,10 +2,6 @@ package net.coderodde.util;
 
 import java.util.Arrays;
 import java.util.Random;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,7 +9,9 @@ public final class AdaptiveMergesortTest {
     
     private static final int BRUTE_FORCE_ITERATIONS = 10;
     private static final int MAXIMUM_ARRAY_LENGTH = 10;
-   
+    private static final int MIN_ELEMENT = -50;
+    private static final int MAX_ELEMENT = 50;
+    private static final int MINIMUM_ARRAY_LENGTH = 3;
     
     @Test
     public void testBruteForce() {
@@ -25,8 +23,17 @@ public final class AdaptiveMergesortTest {
         
         for (int i = 0; i < BRUTE_FORCE_ITERATIONS; ++i) {
             int arrayLength = random.nextInt(MAXIMUM_ARRAY_LENGTH + 1);
+            arrayLength = Math.max(arrayLength, MINIMUM_ARRAY_LENGTH);
             
+            int fromIndex = random.nextInt(arrayLength / 2);
+            int toIndex = arrayLength - random.nextInt(arrayLength / 2);
+            Integer[] array1 = getRandomArray(arrayLength, random);
+            Integer[] array2 = array1.clone();
             
+            Arrays.sort(array1, fromIndex, toIndex);
+            AdaptiveMergesort.sort(array2, fromIndex, toIndex);
+            
+            assertTrue(Arrays.equals(array1, array2));
         }
     }
     
@@ -36,13 +43,18 @@ public final class AdaptiveMergesortTest {
     }
     
     @Test(expected = IllegalArgumentException.class)
-    public void throwsOnReversedFromIndexToIndex() {
-        AdaptiveMergesort.sort(new Integer[]{}, 1, 0);
+    public void testThrowsOnReversedFromIndexToIndex() {
+        AdaptiveMergesort.sort(new Integer[]{ 1, 2, 3 }, 1, 0);
     }
     
     @Test(expected = IndexOutOfBoundsException.class)
-    public void throwsOnNegativeFromIndex() {
-        AdaptiveMergesort
+    public void testThrowsOnNegativeFromIndex() {
+        AdaptiveMergesort.sort(new Integer[]{ 1, 2, 3}, -1, 2);
+    }
+    
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testThrowsOnTooLargeToIndex() {
+        AdaptiveMergesort.sort(new Integer[]{ 1, 2, 3 }, 1, 4);
     }
    
     @Test
@@ -78,5 +90,16 @@ public final class AdaptiveMergesortTest {
         Integer[] array = { 0 };
         AdaptiveMergesort.sort(array);
         assertTrue(Arrays.equals(array, new Integer[]{ 0 }));
+    }
+    
+    private static Integer[] getRandomArray(int length, Random random) {
+        Integer[] array = new Integer[length];
+        
+        for (int i = 0; i < length; ++i) {
+            array[i] = MIN_ELEMENT + 
+                       random.nextInt(MAX_ELEMENT - MIN_ELEMENT + 1);
+        }
+        
+        return array;
     }
 }
