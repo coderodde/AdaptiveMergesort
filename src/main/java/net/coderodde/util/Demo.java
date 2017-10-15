@@ -7,7 +7,7 @@ public final class Demo {
 
     private static final int FROM_INDEX = 7;
     private static final int SKIP_RIGHT = 9;
-    private static final int ARRAY_LENGTH = 1_500_000;
+    private static final int ARRAY_LENGTH = 50_000;
     private static final int BLOCKS = 1000;
     private static final int MIN_ELEMENT = -10_000;
     private static final int MAX_ELEMENT = 10_000;
