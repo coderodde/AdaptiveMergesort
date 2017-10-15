@@ -91,10 +91,6 @@ public final class AdaptiveMergesort {
                                            headInterval1.to + 1,
                                            head2);
                 
-                if (index == headInterval2.to) {
-                    headInterval2 = headInterval2.next;
-                }
-                
                 Interval newInterval = new Interval(headInterval1.from, index - 1);
                 headInterval1.from = index;
                 
@@ -127,10 +123,6 @@ public final class AdaptiveMergesort {
                                            headInterval2.from,
                                            headInterval2.to + 1,
                                            head1);
-                
-                if (index == headInterval1.to) {
-                    headInterval1 = headInterval1.next;
-                }
                 
                 Interval newInterval = new Interval(headInterval2.from,
                                                     index - 1);

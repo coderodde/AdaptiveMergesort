@@ -8,13 +8,14 @@ public final class Demo {
     private static final int FROM_INDEX = 7;
     private static final int SKIP_RIGHT = 9;
     private static final int ARRAY_LENGTH = 100_000;
-    private static final int BLOCKS = 30;
+    private static final int BLOCKS = 100;
     private static final int MIN_ELEMENT = -10_000;
     private static final int MAX_ELEMENT = 10_000;
     
     public static void main(String[] args) {
         long seed = System.currentTimeMillis();
         Random random = new Random(seed);
+        System.out.println("Seed = " + seed);
         
         warmup(random);
         benchmark(random);
