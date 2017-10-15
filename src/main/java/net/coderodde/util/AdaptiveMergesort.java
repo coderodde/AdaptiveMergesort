@@ -441,21 +441,4 @@ public final class AdaptiveMergesort {
                           Math.min(toIndex, fromIndex + bound),
                           value);
     }
-//        
-//    public static void main(String[] args) {
-//        Integer[] array = { 2, 4, 5, 1, 3, 4 };
-//        Run run1 = new Run(0, 2);
-//        Run run2 = new Run(3, 5);
-//        Run merged = merge(array, run1, run2);
-//        System.out.println(merged);
-//        array = new Integer[]{ 1, 2, 3, 1, 2, 3 };
-//        run1 = new Run(0, 2);
-//        run2 = new Run(3, 5);
-//        merged = merge(array, run1, run2);
-//        System.out.println(merged);
-//        
-//        array = new Integer[]{ 5, 1, 8, 3, 6, 7, 9, 2  };
-//        sort(array);
-//        System.out.println(Arrays.toString(array));
-//    }
 }
