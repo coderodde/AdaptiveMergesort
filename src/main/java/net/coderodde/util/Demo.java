@@ -71,8 +71,4 @@ public final class Demo {
         
         return upperBound(array, bound >>> 1, Math.min(toIndex, bound), value);
     }
-    public static void main(String[] args) {
-        Integer[] array = { 2, 4, 5, 1, 3, 4 };
-        System.out.println(findLowerBound(array, 0, 3, 2));
-    }
 }

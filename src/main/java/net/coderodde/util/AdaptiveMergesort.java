@@ -56,8 +56,8 @@ public final class AdaptiveMergesort {
     }
     
     static <T extends Comparable<? super T>> Run merge(T[] aux,
-                                                               Run run1, 
-                                                               Run run2) {
+                                                       Run run1, 
+                                                       Run run2) {
         Interval headInterval1 = run1.first;
         Interval headInterval2 = run2.first;
         Interval mergedRunHead = null;
@@ -68,18 +68,17 @@ public final class AdaptiveMergesort {
             T head2 = aux[headInterval2.from];
             
             if (head1.compareTo(head2) <= 0) {
-                T splitValue = aux[headInterval2.from];
                 int index = findLowerBound(aux,
                                            headInterval1.from,
                                            headInterval1.to + 1,
-                                           splitValue);
+                                           head2);
                 
                 if (index == headInterval2.to) {
                     headInterval2 = headInterval2.next;
                 }
                 
-                Interval newInterval = new Interval(headInterval1.from, index);
-                headInterval1.from = index + 1;
+                Interval newInterval = new Interval(headInterval1.from, index - 1);
+                headInterval1.from = index;
                 
                 if (mergedRunHead == null) {
                     mergedRunHead = newInterval;
@@ -90,18 +89,18 @@ public final class AdaptiveMergesort {
                     mergedRunTail = newInterval;
                 }
             } else {
-                T splitValue = aux[headInterval1.from];
-                int index = findUpperBound(aux, 
+                int index = findLowerBound(aux, 
                                            headInterval2.from,
                                            headInterval2.to + 1,
-                                           splitValue);
+                                           head1);
                 
                 if (index == headInterval1.to) {
                     headInterval1 = headInterval1.next;
                 }
                 
-                Interval newInterval = new Interval(headInterval2.from, index);
-                headInterval2.from = index + 1;
+                Interval newInterval = new Interval(headInterval2.from,
+                                                    index - 1);
+                headInterval2.from = index; 
                 
                 if (mergedRunHead == null) {
                     mergedRunHead = newInterval;
@@ -456,11 +455,15 @@ public final class AdaptiveMergesort {
         int bound = 1;
         int rangeLength = toIndex - fromIndex;
         
-        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+        while (bound < rangeLength &&
+                array[bound + fromIndex].compareTo(value) < 0) {
             bound <<= 1;
         }
         
-        return lowerBound(array, bound >>> 1, Math.min(toIndex, bound), value);
+        return lowerBound(array, 
+                          fromIndex + (bound >>> 1), 
+                          Math.min(toIndex, fromIndex + bound), 
+                          value);
     }
         
     private static <T extends Comparable<? super T>> 
@@ -468,10 +471,22 @@ public final class AdaptiveMergesort {
         int bound = 1;
         int rangeLength = toIndex - fromIndex;
         
-        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+        while (bound < rangeLength 
+                && array[bound + fromIndex].compareTo(value) < 0) {
             bound <<= 1;
         }
         
-        return upperBound(array, bound >>> 1, Math.min(toIndex, bound), value);
+        return upperBound(array, 
+                          fromIndex + (bound >>> 1), 
+                          Math.min(toIndex, fromIndex + bound),
+                          value);
+    }
+        
+    public static void main(String[] args) {
+        Integer[] array = { 2, 4, 5, 1, 3, 4 };
+        Run run1 = new Run(0, 2);
+        Run run2 = new Run(3, 5);
+        Run merged = merge(array, run1, run2);
+        System.out.println("yeah");
     }
 }
