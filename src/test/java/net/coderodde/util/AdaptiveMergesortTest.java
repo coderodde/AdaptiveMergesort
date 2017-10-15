@@ -7,8 +7,8 @@ import static org.junit.Assert.*;
 
 public final class AdaptiveMergesortTest {
     
-    private static final int BRUTE_FORCE_ITERATIONS = 10;
-    private static final int MAXIMUM_ARRAY_LENGTH = 10;
+    private static final int BRUTE_FORCE_ITERATIONS = 1000;
+    private static final int MAXIMUM_ARRAY_LENGTH = 100;
     private static final int MIN_ELEMENT = -50;
     private static final int MAX_ELEMENT = 50;
     private static final int MINIMUM_ARRAY_LENGTH = 3;
