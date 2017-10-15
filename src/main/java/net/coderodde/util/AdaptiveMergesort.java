@@ -55,9 +55,9 @@ public final class AdaptiveMergesort {
         }
     }
     
-    static <T extends Comparable<? super T>> Run merge(T[] aux,
-                                                       Run run1, 
-                                                       Run run2) {
+    private static <T extends Comparable<? super T>> Run merge(T[] aux,
+                                                               Run run1, 
+                                                               Run run2) {
         Interval headInterval1 = run1.first;
         Interval headInterval2 = run2.first;
         Interval mergedRunHead = null;
@@ -68,7 +68,25 @@ public final class AdaptiveMergesort {
             T head2 = aux[headInterval2.from];
             
             if (head1.compareTo(head2) <= 0) {
-                int index = findLowerBound(aux,
+                T tail1 = aux[headInterval1.to];
+                
+                if (tail1.compareTo(head2) <= 0) {
+                    System.out.println("yes!");
+                    
+                    if (mergedRunHead == null) {
+                        mergedRunHead = headInterval1;
+                        mergedRunTail = headInterval1;
+                    } else {
+                        mergedRunTail.next = headInterval1;
+                        headInterval1.prev = mergedRunTail;
+                        mergedRunTail = headInterval1;
+                    }
+                    
+                    headInterval1 = headInterval1.next;
+                    continue;
+                }
+                
+                int index = findUpperBound(aux,
                                            headInterval1.from,
                                            headInterval1.to + 1,
                                            head2);
@@ -89,6 +107,23 @@ public final class AdaptiveMergesort {
                     mergedRunTail = newInterval;
                 }
             } else {
+                T tail2 = aux[headInterval2.to];
+                
+                if (tail2.compareTo(head1) < 0) {
+                    System.out.println("yes 2!");
+                    
+                    if (mergedRunHead == null) {
+                        mergedRunHead = headInterval2;
+                        mergedRunTail = headInterval2;
+                    } else {
+                        mergedRunTail.next = headInterval2;
+                        headInterval2.prev = mergedRunTail;
+                        mergedRunTail = headInterval2;
+                    }
+                    
+                    headInterval2 = headInterval2.next;
+                    continue;
+                }
                 int index = findLowerBound(aux, 
                                            headInterval2.from,
                                            headInterval2.to + 1,
