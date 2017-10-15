@@ -28,7 +28,7 @@ public final class AdaptiveMergesort {
         RunQueue queue = new RunLengthQueueBuilder<>(aux).run();
         int runsLeft = queue.size();
         
-        while (queue.size() > 0) {
+        while (queue.size() > 1) {
             switch (runsLeft) {
                 case 1:
                     // Bounce the lonely leftover run back to the tail of the 
@@ -46,11 +46,13 @@ public final class AdaptiveMergesort {
             queue.enqueue(merge(aux, run1, run2));
         }
         
+        int arrayIndex = fromIndex;
+        
         for (Interval interval = queue.dequeue().first; 
                 interval != null; 
                 interval = interval.next) {
             for (int i = interval.from; i <= interval.to; ++i) {
-                array[fromIndex + i] = aux[i];
+                array[arrayIndex++] = aux[i];
             }
         }
     }
@@ -71,8 +73,6 @@ public final class AdaptiveMergesort {
                 T tail1 = aux[headInterval1.to];
                 
                 if (tail1.compareTo(head2) <= 0) {
-                    System.out.println("yes!");
-                    
                     if (mergedRunHead == null) {
                         mergedRunHead = headInterval1;
                         mergedRunTail = headInterval1;
@@ -110,8 +110,6 @@ public final class AdaptiveMergesort {
                 T tail2 = aux[headInterval2.to];
                 
                 if (tail2.compareTo(head1) < 0) {
-                    System.out.println("yes 2!");
-                    
                     if (mergedRunHead == null) {
                         mergedRunHead = headInterval2;
                         mergedRunTail = headInterval2;
@@ -124,6 +122,7 @@ public final class AdaptiveMergesort {
                     headInterval2 = headInterval2.next;
                     continue;
                 }
+                
                 int index = findLowerBound(aux, 
                                            headInterval2.from,
                                            headInterval2.to + 1,
@@ -148,6 +147,8 @@ public final class AdaptiveMergesort {
             }
         }
         
+        // Append the leftover intervals of a currently non-empty run to the
+        // tail of the merged run:
         if (headInterval1 != null) {
             mergedRunTail.next = headInterval1;
             headInterval1.prev = mergedRunTail;
@@ -158,77 +159,9 @@ public final class AdaptiveMergesort {
             mergedRunTail = headInterval2;
         }
         
+        // Reuse 'run1' in order not to abuse the heap memory:
         run1.first = mergedRunHead;
         run1.last = mergedRunTail;
-        return run1;
-    }
-    
-    private static <T extends Comparable<? super T>> 
-        Run mergeOld(T[] aux, Run run1, Run run2) {
-        Interval targetHead = null;
-        Interval targetTail = null;
-        Interval source1 = run1.first;
-        Interval source2 = run2.first;
-        boolean splitFirstRun;
-        
-        if (aux[run1.first.from].compareTo(aux[run2.first.from]) <= 0) {
-            splitFirstRun = true;
-        } else {
-            splitFirstRun = false;
-        }
-        
-        while (source1 != null && source2 != null) {
-            if (splitFirstRun) {
-                int index = findLowerBound(aux,
-                                           source1.from,
-                                           source1.to + 1,
-                                           aux[source2.from]);
-                
-                Interval newInterval = new Interval(source1.from, index);
-                source1.from = index;
-                
-                if (targetHead == null) {
-                    targetHead = newInterval;
-                    targetTail = newInterval;
-                } else {
-                    targetTail.next = newInterval;
-                    newInterval.prev = targetTail;
-                    targetTail = newInterval;
-                }
-            } else {
-                int index = findLowerBound(aux,
-                                           source2.from,
-                                           source2.to + 1,
-                                           aux[source1.from]);
-                
-                Interval newInterval = new Interval(source2.from, index);
-                source2.from = index;
-                
-                if (targetHead == null) {
-                    targetHead = newInterval;
-                    targetTail = newInterval;
-                } else {
-                    targetTail.next = newInterval;
-                    newInterval.prev = targetTail;
-                    targetTail = newInterval;
-                }
-            }
-            
-            splitFirstRun = !splitFirstRun;
-        }
-        
-        if (source1 != null) {
-            targetTail.next = source1;
-            source1.prev = targetTail;
-            targetTail = source1;
-        } else {
-            targetTail.next = source2;
-            source2.prev = targetTail;
-            targetTail = source2;
-        }
-        
-        run1.first = targetHead;
-        run1.last = targetTail;
         return run1;
     }
     
@@ -528,5 +461,9 @@ public final class AdaptiveMergesort {
         run2 = new Run(3, 5);
         merged = merge(array, run1, run2);
         System.out.println(merged);
+        
+        array = new Integer[]{ 5, 1, 8, 3, 6, 7, 9, 2  };
+        sort(array);
+        System.out.println(Arrays.toString(array));
     }
 }
