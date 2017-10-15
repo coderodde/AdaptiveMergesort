@@ -50,9 +50,29 @@ public final class Demo {
         return fromIndex;
     }
     
+    private static int findLowerBound(Integer[] array, int fromIndex, int toIndex, Integer value) {
+        int bound = 1;
+        int rangeLength = toIndex - fromIndex;
+        
+        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+            bound <<= 1;
+        }
+        
+        return lowerBound(array, bound >>> 1, Math.min(toIndex, bound), value);
+    }
+        
+    private static int findUpperBound(Integer[] array, int fromIndex, int toIndex, Integer value) {
+        int bound = 1;
+        int rangeLength = toIndex - fromIndex;
+        
+        while (bound < rangeLength && array[bound].compareTo(value) < 0) {
+            bound <<= 1;
+        }
+        
+        return upperBound(array, bound >>> 1, Math.min(toIndex, bound), value);
+    }
     public static void main(String[] args) {
-        Integer[] arr = { 1, 2, 4, 7, 10, 10, 11, 14, 14, 19, 20 };
-        System.out.println("Lower bound: " + lowerBound(arr, 1, arr.length - 1, 10));
-        System.out.println("Upper bound: " + upperBound(arr, 1, arr.length - 1, 10));
+        Integer[] array = { 2, 4, 5, 1, 3, 4 };
+        System.out.println(findLowerBound(array, 0, 3, 2));
     }
 }
