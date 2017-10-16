@@ -44,6 +44,7 @@ public final class AdaptiveMergesort {
             Run run1 = queue.dequeue();
             Run run2 = queue.dequeue();
             queue.enqueue(merge(aux, run1, run2));
+            runsLeft--;
         }
         
         int arrayIndex = fromIndex;

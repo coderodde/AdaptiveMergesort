@@ -5,7 +5,7 @@ import java.util.Random;
 
 public final class Demo {
 
-    private static final int FROM_INDEX = 7;
+    private static final int FROM_INDEX = 8;
     private static final int SKIP_RIGHT = 9;
     private static final int ARRAY_LENGTH = 50_000;
     private static final int BLOCKS = 1000;
@@ -14,7 +14,14 @@ public final class Demo {
     private static final int MAX_RUN_LENGTH = 100;
     private static final int RUNS = 1000;
 
+    private static void debug() {
+        
+        System.exit(0);
+    }
+    
     public static void main(String[] args) {
+        debug();
+        
         long seed = System.currentTimeMillis();
         Random random = new Random(seed);
         System.out.println("Seed = " + seed);
@@ -98,7 +105,7 @@ public final class Demo {
                                " milliseconds.");
 
             System.out.println("Algorithms agree: " +
-                               Arrays.equals(array1, array2));
+                               arraysEqual(array1, array2));
         }
     }
 
@@ -233,5 +240,19 @@ public final class Demo {
             blocks[index1] = blocks[index2];
             blocks[index2] = block;
         }
+    }
+    
+    private static boolean arraysEqual(Integer[] array1, Integer[] array2) {
+        if (array1.length != array2.length) {
+            return false;
+        }
+        
+        for (int i = 0; i < array1.length; ++i) {
+            if (array1[i] != array2[i]) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
