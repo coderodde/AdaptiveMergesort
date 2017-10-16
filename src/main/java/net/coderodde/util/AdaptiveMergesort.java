@@ -186,11 +186,6 @@ public final class AdaptiveMergesort {
             this.from = from;
             this.to = to;
         }
-        
-        @Override
-        public String toString() {
-            return "(" + from + ", " + to + ")";
-        }
     }
     
     private static final class Run {
@@ -200,21 +195,6 @@ public final class AdaptiveMergesort {
         Run(int from, int to) {
             first = new Interval(from, to);
             last = first;
-        }
-        
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("[");
-            String separator = "";
-            
-            for (Interval interval = first; 
-                    interval != null; 
-                    interval = interval.next) {
-                sb.append(separator).append(interval);
-                separator = ", ";
-            }
-            
-            return sb.append("]").toString();
         }
     }
     
@@ -256,19 +236,6 @@ public final class AdaptiveMergesort {
         private static int ceilCapacityToPowerOfTwo(int capacity) {
             int ret = Integer.highestOneBit(capacity);
             return ret != capacity ? ret << 1 : ret;
-        }
-        
-        @Override
-        public String toString() {
-            StringBuilder sb = new StringBuilder("[");
-            String separator = "";
-            
-            for (int i = 0; i < size; ++i) {
-                sb.append(separator).append(runArray[(head + i) & mask]);
-                separator = ", ";
-            }
-            
-            return sb.append("]").toString();
         }
     }
     

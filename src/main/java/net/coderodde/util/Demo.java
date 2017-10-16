@@ -38,6 +38,9 @@ public final class Demo {
         array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
         warmup(array);
 
+        array = getZigZagArray(ARRAY_LENGTH);
+        warmup(array);
+        
         System.out.println("Warming up done!\n\n");
     }
 
@@ -56,6 +59,10 @@ public final class Demo {
         
         array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
         System.out.println("--- Runny array -----");
+        benchmark(array);
+        
+        array = getZigZagArray(ARRAY_LENGTH);
+        System.out.println("--- Zig zag array ---");
         benchmark(array);
     }
 
@@ -171,6 +178,18 @@ public final class Demo {
             array[i] = i;
         }
 
+        return array;
+    }
+    
+    private static final Integer[] getZigZagArray(int length) {
+        Integer[] array = getAscendingArray(length);
+        
+        for (int i = 0; i + 1 < length; i += 2) {
+            Integer tmp = array[i];
+            array[i] = array[i + 1];
+            array[i + 1] = tmp;
+        }
+        
         return array;
     }
 
