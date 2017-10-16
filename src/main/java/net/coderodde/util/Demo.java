@@ -13,7 +13,7 @@ public final class Demo {
     private static final int MAX_ELEMENT = 10_000;
     private static final int MAX_RUN_LENGTH = 100;
     private static final int RUNS = 1000;
-    
+
     public static void main(String[] args) {
         long seed = System.currentTimeMillis();
         Random random = new Random(seed);
@@ -31,17 +31,17 @@ public final class Demo {
 
         array = getRandomArray(ARRAY_LENGTH, random);
         warmup(array);
-        
+
         array = getFunnyArray(ARRAY_LENGTH, random);
         warmup(array);
-        
+
         array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
         warmup(array);
 
         array = getZigZagArray(ARRAY_LENGTH);
         warmup(array);
-        
-        System.out.println("Warming up done!\n\n");
+
+        System.out.println("Warming up done!");
     }
 
     private static void benchmark(Random random) {
@@ -52,15 +52,15 @@ public final class Demo {
         array = getRandomArray(ARRAY_LENGTH, random);
         System.out.println("\n--- Random array ----");
         benchmark(array);
-        
+
         array = getFunnyArray(ARRAY_LENGTH, random);
         System.out.println("\n--- Funny array -----");
         benchmark(array);
-        
+
         array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
         System.out.println("\n--- Runny array -----");
         benchmark(array);
-        
+
         array = getZigZagArray(ARRAY_LENGTH);
         System.out.println("\n--- Zig zag array ---");
         benchmark(array);
@@ -96,10 +96,6 @@ public final class Demo {
             System.out.println("AdaptiveMergesort.sort in " + 
                                (endTime - startTime) +
                                " milliseconds.");
-            
-            System.out.println("Sorted: " + isSorted(array2,
-                                                     FROM_INDEX,
-                                                     length - SKIP_RIGHT));
 
             System.out.println("Algorithms agree: " +
                                arraysEqual(array1, array2));
@@ -126,22 +122,22 @@ public final class Demo {
 
     private static final Integer[] getFunnyArray(int length, Random random) {
         Integer[] array = new Integer[length];
-        
+
         int index = 0;
-        
+
         while (index < array.length) {
             int remaining = array.length - index;
             int next = random.nextInt(MAX_RUN_LENGTH);
             int actual = Math.min(remaining, next);
             boolean direction = random.nextBoolean();
-            
+
             Integer first = 
                     MIN_ELEMENT + 
                     random.nextInt(MAX_ELEMENT - MIN_ELEMENT + 1);
-            
+
             array[index++] = first;
             int step = 1 + random.nextInt(5);
-            
+
             if (direction) {
                 for (int i = 1; i < actual; ++i) {
                     array[index++] = first + i * step;
@@ -152,29 +148,29 @@ public final class Demo {
                 }
             }
         }
-        
+
         return array;
     }
-    
+
     private static final Integer[] getRunnyArray(int length,
                                                  int runLength, 
                                                  Random random) {
         Integer[] array = getRandomArray(length, random);
-        
+
         int index = 0;
-        
+
         while (index < length) {
             int remaining = length - index;
             int requested = random.nextInt(runLength);
             int actual = Math.min(remaining, requested);
-            
+
             Arrays.sort(array, index, index + actual);
             index += actual;
         }
-        
+
         return array;
     }
-    
+
     private static final Integer[] getAscendingArray(int length) {
         Integer[] array = new Integer[length];
 
@@ -184,16 +180,16 @@ public final class Demo {
 
         return array;
     }
-    
+
     private static final Integer[] getZigZagArray(int length) {
         Integer[] array = getAscendingArray(length);
-        
+
         for (int i = 0; i + 1 < length; i += 2) {
             Integer tmp = array[i];
             array[i] = array[i + 1];
             array[i + 1] = tmp;
         }
-        
+
         return array;
     }
 
@@ -238,30 +234,18 @@ public final class Demo {
             blocks[index2] = block;
         }
     }
-    
+
     private static boolean arraysEqual(Integer[] array1, Integer[] array2) {
         if (array1.length != array2.length) {
             return false;
         }
-        
+
         for (int i = 0; i < array1.length; ++i) {
             if (array1[i] != array2[i]) {
                 return false;
             }
         }
-        
-        return true;
-    }
-    
-    private static boolean isSorted(Integer[] array,
-                                    int fromIndex, 
-                                    int toIndex) {
-        for (int i = fromIndex; i < toIndex - 1; ++i) {
-            if (array[i] > array[i + 1]) {
-                return false;
-            }
-        }
-        
+
         return true;
     }
 }
