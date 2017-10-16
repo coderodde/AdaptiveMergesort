@@ -7,7 +7,8 @@ public final class Demo {
 
     private static final int FROM_INDEX = 8;
     private static final int SKIP_RIGHT = 9;
-    private static final int ARRAY_LENGTH = 50_000;
+    private static final int ARRAY_LENGTH = 100_000;
+    private static final int WARMUP_ARRAY_LENGTH = 1000_000;
     private static final int BLOCKS = 1000;
     private static final int MIN_ELEMENT = -10_000;
     private static final int MAX_ELEMENT = 10_000;
@@ -26,19 +27,19 @@ public final class Demo {
     private static void warmup(Random random) {
         System.out.println("Warming up...");
 
-        Integer[] array = getBlockedArray(ARRAY_LENGTH, BLOCKS, random);
+        Integer[] array = getBlockedArray(WARMUP_ARRAY_LENGTH, BLOCKS, random);
         warmup(array);
 
-        array = getRandomArray(ARRAY_LENGTH, random);
+        array = getRandomArray(WARMUP_ARRAY_LENGTH, random);
         warmup(array);
 
-        array = getFunnyArray(ARRAY_LENGTH, random);
+        array = getFunnyArray(WARMUP_ARRAY_LENGTH, random);
         warmup(array);
 
-        array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
+        array = getRunnyArray(WARMUP_ARRAY_LENGTH, RUNS, random);
         warmup(array);
 
-        array = getZigZagArray(ARRAY_LENGTH);
+        array = getZigZagArray(WARMUP_ARRAY_LENGTH);
         warmup(array);
 
         System.out.println("Warming up done!");
