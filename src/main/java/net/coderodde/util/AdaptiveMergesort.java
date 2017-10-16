@@ -44,7 +44,7 @@ public final class AdaptiveMergesort {
             Run run1 = queue.dequeue();
             Run run2 = queue.dequeue();
             queue.enqueue(merge(aux, run1, run2));
-            runsLeft--;
+            runsLeft -= 2;
         }
         
         int arrayIndex = fromIndex;
@@ -142,15 +142,11 @@ public final class AdaptiveMergesort {
         
         // Append the leftover intervals of a currently non-empty run to the
         // tail of the merged run:
-        if (headInterval1 != null) {
-            mergedRunTail.next = headInterval1;
-            headInterval1.prev = mergedRunTail;
-            mergedRunTail = headInterval1;
-        } else {
-            mergedRunTail.next = headInterval2;
-            headInterval2.prev = mergedRunTail;
-            mergedRunTail = headInterval2;
-        }
+        
+        mergedRunTail.next = headInterval1 != null ? headInterval1 :
+                                                     headInterval2;
+        mergedRunTail.next.prev = mergedRunTail;
+        mergedRunTail = mergedRunTail.next;
         
         // Reuse 'run1' in order not to abuse the heap memory:
         run1.first = mergedRunHead;

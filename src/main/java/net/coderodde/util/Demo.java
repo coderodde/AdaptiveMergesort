@@ -13,15 +13,8 @@ public final class Demo {
     private static final int MAX_ELEMENT = 10_000;
     private static final int MAX_RUN_LENGTH = 100;
     private static final int RUNS = 1000;
-
-    private static void debug() {
-        
-        System.exit(0);
-    }
     
     public static void main(String[] args) {
-        debug();
-        
         long seed = System.currentTimeMillis();
         Random random = new Random(seed);
         System.out.println("Seed = " + seed);
@@ -53,23 +46,23 @@ public final class Demo {
 
     private static void benchmark(Random random) {
         Integer[] array = getBlockedArray(ARRAY_LENGTH, BLOCKS, random);
-        System.out.println("--- Blocked array ---");
+        System.out.println("\n--- Blocked array ---");
         benchmark(array);
 
         array = getRandomArray(ARRAY_LENGTH, random);
-        System.out.println("--- Random array ----");
+        System.out.println("\n--- Random array ----");
         benchmark(array);
         
         array = getFunnyArray(ARRAY_LENGTH, random);
-        System.out.println("--- Funny array -----");
+        System.out.println("\n--- Funny array -----");
         benchmark(array);
         
         array = getRunnyArray(ARRAY_LENGTH, RUNS, random);
-        System.out.println("--- Runny array -----");
+        System.out.println("\n--- Runny array -----");
         benchmark(array);
         
         array = getZigZagArray(ARRAY_LENGTH);
-        System.out.println("--- Zig zag array ---");
+        System.out.println("\n--- Zig zag array ---");
         benchmark(array);
     }
 
@@ -103,6 +96,10 @@ public final class Demo {
             System.out.println("AdaptiveMergesort.sort in " + 
                                (endTime - startTime) +
                                " milliseconds.");
+            
+            System.out.println("Sorted: " + isSorted(array2,
+                                                     FROM_INDEX,
+                                                     length - SKIP_RIGHT));
 
             System.out.println("Algorithms agree: " +
                                arraysEqual(array1, array2));
@@ -249,6 +246,18 @@ public final class Demo {
         
         for (int i = 0; i < array1.length; ++i) {
             if (array1[i] != array2[i]) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    private static boolean isSorted(Integer[] array,
+                                    int fromIndex, 
+                                    int toIndex) {
+        for (int i = fromIndex; i < toIndex - 1; ++i) {
+            if (array[i] > array[i + 1]) {
                 return false;
             }
         }
