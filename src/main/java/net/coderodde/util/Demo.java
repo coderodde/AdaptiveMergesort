@@ -13,7 +13,7 @@ public final class Demo {
     private static final int MIN_ELEMENT = -10_000;
     private static final int MAX_ELEMENT = 10_000;
     private static final int MAX_RUN_LENGTH = 100;
-    private static final int RUNS = 1000;
+    private static final int RUNS = 1000;  
 
     public static void main(String[] args) {
         long seed = System.currentTimeMillis();
