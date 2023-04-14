@@ -351,17 +351,16 @@ public final class AdaptiveMergesort {
                 ++right;
             }
 
-            Run run = new Run(head, left);
 
             if (previousRunWasDesending) {
                 if (array[head - 1].compareTo(array[head]) <= 0) {
                     // We can just extend the previous run:
                     queue.addToLastRun(right - head);
                 } else {
-                    queue.enqueue(run);
+                    queue.enqueue(new Run(head, left));
                 }
             } else {
-                queue.enqueue(run);
+                queue.enqueue(new Run(head, left));
             }
 
             previousRunWasDesending = false;
@@ -373,7 +372,6 @@ public final class AdaptiveMergesort {
                 ++right;
             }
 
-            Run run = new Run(head, left);
             reverseRun(array, head, left);
 
             if (previousRunWasDesending) {
@@ -381,10 +379,10 @@ public final class AdaptiveMergesort {
                     // We can just extend the previous run:
                     queue.addToLastRun(right - head);
                 } else {
-                    queue.enqueue(run);
+                    queue.enqueue(new Run(head, left));
                 }
             } else {
-                queue.enqueue(run);
+                queue.enqueue(new Run(head, left));
             }
 
             previousRunWasDesending = true;
